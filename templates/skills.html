@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Skills{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <h1 class="text-center mb-5">Skills & Expertise</h1>
+        <div class="row">
+            <div class="col-lg-6">
+                <h3>Proficient</h3>
+                <div class="mb-4">
+                    {% for skill in data.skills.proficient %}
+                    <span class="badge bg-primary me-2 mb-2">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+                <h3>Exposure</h3>
+                <div>
+                    {% for skill in data.skills.exposure %}
+                    <span class="badge bg-secondary me-2 mb-2">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <canvas id="skillsChart"></canvas>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% block scripts %}
+<script>
+    const ctx = document.getElementById('skillsChart').getContext('2d');
+    const skillsChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: ['Python', 'SQL', 'AWS', 'Power BI', 'Git', 'ETL', 'Data Modeling'],
+            datasets: [{
+                label: 'Skill Level',
+                data: [90, 85, 80, 85, 75, 80, 78],
+                backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                borderColor: 'rgba(0, 123, 255, 1)',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            scales: {
+                r: {
+                    beginAtZero: true,
+                    max: 100
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %}

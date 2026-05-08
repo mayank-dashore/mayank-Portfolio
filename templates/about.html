@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <h1 class="text-center mb-5">About Me</h1>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <p class="lead text-center mb-4">{{ data.summary }}</p>
+                <h3>Education</h3>
+                {% for edu in data.education %}
+                <div class="mb-4">
+                    <h5>{{ edu.degree }}</h5>
+                    <p class="text-muted">{{ edu.institution }} | {{ edu.period }}</p>
+                    <p>GPA: {{ edu.gpa }}</p>
+                </div>
+                {% endfor %}
+                <h3>Certifications</h3>
+                <ul>
+                    {% for cert in data.certifications %}
+                    <li>{{ cert }}</li>
+                    {% endfor %}
+                </ul>
+                <h3>Research Publications</h3>
+                {% for pub in data.publications %}
+                <div class="mb-3">
+                    <h5>{{ pub.title }}</h5>
+                    <p>{{ pub.publisher }} | {{ pub.date }}</p>
+                    <p>{{ pub.doi }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

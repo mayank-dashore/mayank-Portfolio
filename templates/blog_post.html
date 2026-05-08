@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} | Blog | Mayank{% endblock %}
+
+{% block content %}
+<section class="blog-page-section">
+    <div class="container-xl">
+        <div class="section-header text-center mx-auto mb-5">
+            <span>Blog Post</span>
+            <h2>{{ post.title }}</h2>
+            <p class="section-subtitle">Published {{ post.date }}</p>
+        </div>
+        <article class="blog-article">
+            <div class="blog-article-content">
+                {% for paragraph in post.content %}
+                <p>{{ paragraph }}</p>
+                {% endfor %}
+            </div>
+            <div class="blog-article-actions">
+                <a class="btn btn-cta" href="{{ url_for('blogs') }}">Back to Blogs</a>
+            </div>
+        </article>
+    </div>
+</section>
+{% endblock %}

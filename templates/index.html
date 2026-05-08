@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}Mayank | Data Engineer{% endblock %}
+
+{% block content %}
+<section id="home" class="hero-section">
+    <div class="container-xl hero-shell">
+        <div class="hero-panel row gx-5 gy-5 align-items-center">
+            <div class="col-lg-6 hero-visual">
+                <div class="portrait-glow"></div>
+                <div class="portrait-card">
+                    <img src="{{ url_for('static', filename='images/portrait.svg') }}" alt="Profile photo" class="portrait-image">
+                </div>
+            </div>
+            <div class="col-lg-6 hero-copy">
+                <p class="eyebrow-text">Hello I'm <span class="eyebrow-highlight">{{ data.name }}</span></p>
+                <h1>{{ data.title }}</h1>
+                <p class="hero-copy__text">{{ data.summary }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="stats-section">
+    <div class="container-xl stats-shell">
+        <div class="row gx-3 gy-3 text-center stats-grid">
+            <div class="col-sm-6 col-xl-3 stat-card">
+                <span class="stat-value">2+</span>
+                <p>Years experience</p>
+            </div>
+            <div class="col-sm-6 col-xl-3 stat-card">
+                <span class="stat-value">3+</span>
+                <p>Companies</p>
+            </div>
+            <div class="col-sm-6 col-xl-3 stat-card">
+                <span class="stat-value">3+</span>
+                <p>Projects completed</p>
+            </div>
+            <div class="col-sm-6 col-xl-3 stat-card">
+                <span class="stat-value">4+</span>
+                <p>Certifications</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="testimonial-section" style="display: none;">
+    <div class="container-xl">
+        <div class="testimonial-card text-center mx-auto">
+            <div class="testimonial-avatar">
+                <img src="{{ url_for('static', filename='images/avatar.svg') }}" alt="Client avatar">
+            </div>
+            <div class="testimonial-rating">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+            </div>
+            <p class="testimonial-text">"Mayank's ETL pipelines and Power BI dashboards transformed our financial reporting process, reducing manual effort and improving accuracy."</p>
+            <span class="testimonial-name">Portfolio Manager, Private Equity Company</span>
+        </div>
+    </div>
+</section>
+
+<section id="projects" class="projects-section">
+    <div class="container-xl">
+        <div class="section-header text-center mx-auto mb-5">
+            <span>Featured projects</span>
+            <h2>Data Engineering & Dashboard Solutions</h2>
+        </div>
+        <div class="projects-container">
+            {% for project in data.projects %}
+            <div class="project-card-horizontal">
+                <div class="project-cover project-cover--{{ loop.index }}"></div>
+                <div class="project-content">
+                    <div class="project-copy">
+                        <span>{{ project.date }}</span>
+                        <h3>{{ project.title }}</h3>
+                        <div class="project-description">
+                            {% for desc in project.description[:2] %}
+                            <p>{{ desc }}</p>
+                            {% endfor %}
+                        </div>
+                        <button class="btn-more" onclick="toggleDetails(this)">More</button>
+                        <div class="project-details" style="display: none;">
+                            {% for desc in project.description[2:] %}
+                            <p>{{ desc }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="blogs" class="blogs-section">
+    <div class="container-xl">
+        <div class="section-header text-center mx-auto mb-5">
+            <span>Knowledge sharing</span>
+            <h2>My Blog Articles</h2>
+        </div>
+        <div class="blogs-container">
+            {% for post in data.blog_posts %}
+            <div class="blog-card">
+                <div class="blog-cover blog-cover--{{ loop.index }}"></div>
+                <div class="blog-content">
+                    <span class="blog-date">{{ post.date }}</span>
+                    <h3>{{ post.title }}</h3>
+                    <p>{{ post.excerpt }}</p>
+                    <a href="{{ url_for('blog_post', slug=post.slug) }}" target="_blank" class="blog-link">Read More →</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="skills" class="skills-section">
+    <div class="container-xl">
+        <div class="section-header text-center mx-auto mb-5">
+            <span>Technical Skills</span>
+            <h2>Tools & Technologies</h2>
+        </div>
+        <div class="row gx-4 gy-4">
+            <div class="col-lg-6">
+                <div class="glass-card p-4">
+                    <h3>Proficient</h3>
+                    <ul class="skills-list">
+                        {% for skill in data.skills.proficient %}
+                        <li>{{ skill }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="glass-card p-4">
+                    <h3>Exposure</h3>
+                    <ul class="skills-list">
+                        {% for skill in data.skills.exposure %}
+                        <li>{{ skill }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="contact-section">
+    <div class="container-xl">
+        <div class="section-header text-center mx-auto mb-5">
+            <span>Get in touch</span>
+            <h2>Let's Connect & Collaborate</h2>
+        </div>
+        <div class="contact-cards-grid">
+            <div class="contact-card">
+                <div class="contact-icon">
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+                <h3>Email</h3>
+                <p>{{ data.contact.email }}</p>
+                <a href="mailto:{{ data.contact.email }}" class="contact-link">Send Email</a>
+            </div>
+            <div class="contact-card">
+                <div class="contact-icon">
+                    <i class="fa-solid fa-phone"></i>
+                </div>
+                <h3>Phone</h3>
+                <p>{{ data.contact.phone }}</p>
+                <a href="tel:{{ data.contact.phone }}" class="contact-link">Call Now</a>
+            </div>
+            <div class="contact-card">
+                <div class="contact-icon">
+                    <i class="fa-brands fa-linkedin"></i>
+                </div>
+                <h3>LinkedIn</h3>
+                <p>Connect with me</p>
+                <a href="https://{{ data.contact.linkedin }}" target="_blank" class="contact-link">Visit Profile</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

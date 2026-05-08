@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Projects{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <h1 class="text-center mb-5">Projects</h1>
+        <div class="row">
+            {% for project in data.projects %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ project.title }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ project.date }}</h6>
+                        <ul>
+                            {% for desc in project.description %}
+                            <li>{{ desc }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
