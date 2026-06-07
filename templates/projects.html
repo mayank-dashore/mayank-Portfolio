@@ -1,28 +1,45 @@
 {% extends "base.html" %}
 
-{% block title %}Projects{% endblock %}
+{% block title %}Projects - Mayank | Data Engineer{% endblock %}
 
 {% block content %}
-<section class="py-5">
-    <div class="container">
-        <h1 class="text-center mb-5">Projects</h1>
-        <div class="row">
-            {% for project in data.projects %}
-            <div class="col-md-6 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ project.title }}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">{{ project.date }}</h6>
-                        <ul>
-                            {% for desc in project.description %}
-                            <li>{{ desc }}</li>
+<section class="projects-section py-5">
+    <div class="container-xl">
+        <div class="section-header text-center mx-auto mb-5">
+            <span>Featured Portfolio</span>
+            <h2>Data Engineering & Analytics Projects</h2>
+        </div>
+        
+        <div class="projects-grid">
+            {% for project in projects %}
+            <div class="project-card">
+                {% if project.get('image_url') %}
+                <div class="project-cover" style="background-image: url('{{ project.image_url if project.image_url.startswith('http') else url_for('static', filename=project.image_url) }}'); background-size: cover; background-position: center;"></div>
+                {% else %}
+                <div class="project-cover project-cover--{{ loop.index }}"></div>
+                {% endif %}
+                <div class="project-content">
+                    <div class="project-copy">
+                        <span class="project-date">{{ project.date }}</span>
+                        <h3>{{ project.title }}</h3>
+                        <div class="project-description">
+                            {% for desc in project.description[:2] %}
+                            <p>{{ desc }}</p>
                             {% endfor %}
-                        </ul>
+                        </div>
+                        <a href="{{ url_for('project_detail', project_id=loop.index0) }}" class="project-link">View Details →</a>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
+    </div>
+</section>
+
+<section class="cta-section text-center py-5">
+    <div class="container-xl">
+        <a href="/" class="btn btn-cta">Back to Home</a>
+        <a href="{{ url_for('blogs') }}" class="btn btn-cta">Explore Articles →</a>
     </div>
 </section>
 {% endblock %}

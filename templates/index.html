@@ -6,16 +6,20 @@
 <section id="home" class="hero-section">
     <div class="container-xl hero-shell">
         <div class="hero-panel row gx-5 gy-5 align-items-center">
-            <div class="col-lg-6 hero-visual">
+            <div class="col-md-6 hero-visual">
                 <div class="portrait-glow"></div>
                 <div class="portrait-card">
-                    <img src="{{ url_for('static', filename='images/portrait.svg') }}" alt="Profile photo" class="portrait-image">
+                    <!-- ADD YOUR PHOTO HERE: Update 'portrait_image' in app.py with your actual photo path, e.g. 'images/my-photo.jpg' -->
+                    <img src="{{ url_for('static', filename=data.portrait_image | default('images/portrait.svg')) }}" alt="Profile photo" class="portrait-image">
                 </div>
             </div>
-            <div class="col-lg-6 hero-copy">
+            <div class="col-md-6 hero-copy">
                 <p class="eyebrow-text">Hello I'm <span class="eyebrow-highlight">{{ data.name }}</span></p>
                 <h1>{{ data.title }}</h1>
                 <p class="hero-copy__text">{{ data.summary }}</p>
+                <div class="hero-actions mt-4">
+                    <a href="/about" class="btn btn-cta">Know more about me</a>
+                </div>
             </div>
         </div>
     </div>
@@ -70,9 +74,13 @@
             <h2>Data Engineering & Dashboard Solutions</h2>
         </div>
         <div class="projects-container">
-            {% for project in data.projects %}
+            {% for project in data.projects[:3] %}
             <div class="project-card-horizontal">
+                {% if project.get('image_url') %}
+                <div class="project-cover" style="background-image: url('{{ project.image_url if project.image_url.startswith('http') else url_for('static', filename=project.image_url) }}'); background-size: cover; background-position: center;"></div>
+                {% else %}
                 <div class="project-cover project-cover--{{ loop.index }}"></div>
+                {% endif %}
                 <div class="project-content">
                     <div class="project-copy">
                         <span>{{ project.date }}</span>
@@ -82,16 +90,14 @@
                             <p>{{ desc }}</p>
                             {% endfor %}
                         </div>
-                        <button class="btn-more" onclick="toggleDetails(this)">More</button>
-                        <div class="project-details" style="display: none;">
-                            {% for desc in project.description[2:] %}
-                            <p>{{ desc }}</p>
-                            {% endfor %}
-                        </div>
+                        <a href="{{ url_for('project_detail', project_id=loop.index0) }}" class="btn-more">View Details →</a>
                     </div>
                 </div>
             </div>
             {% endfor %}
+        </div>
+        <div class="text-center mt-5">
+            <a href="{{ url_for('projects') }}" class="btn btn-cta">View All Projects</a>
         </div>
     </div>
 </section>
@@ -103,9 +109,13 @@
             <h2>My Blog Articles</h2>
         </div>
         <div class="blogs-container">
-            {% for post in data.blog_posts %}
+            {% for post in data.blog_posts[:3] %}
             <div class="blog-card">
+                {% if post.get('image_url') %}
+                <div class="blog-cover" style="background-image: url('{{ post.image_url if post.image_url.startswith('http') else url_for('static', filename=post.image_url) }}'); background-size: cover; background-position: center;"></div>
+                {% else %}
                 <div class="blog-cover blog-cover--{{ loop.index }}"></div>
+                {% endif %}
                 <div class="blog-content">
                     <span class="blog-date">{{ post.date }}</span>
                     <h3>{{ post.title }}</h3>
@@ -114,6 +124,9 @@
                 </div>
             </div>
             {% endfor %}
+        </div>
+        <div class="text-center mt-5">
+            <a href="{{ url_for('blogs') }}" class="btn btn-cta">View All Blogs</a>
         </div>
     </div>
 </section>
@@ -156,6 +169,7 @@
             <h2>Let's Connect & Collaborate</h2>
         </div>
         <div class="contact-cards-grid">
+            {% if data.contact.email %}
             <div class="contact-card">
                 <div class="contact-icon">
                     <i class="fa-solid fa-envelope"></i>
@@ -164,6 +178,8 @@
                 <p>{{ data.contact.email }}</p>
                 <a href="mailto:{{ data.contact.email }}" class="contact-link">Send Email</a>
             </div>
+            {% endif %}
+            {% if data.contact.phone %}
             <div class="contact-card">
                 <div class="contact-icon">
                     <i class="fa-solid fa-phone"></i>
@@ -172,6 +188,8 @@
                 <p>{{ data.contact.phone }}</p>
                 <a href="tel:{{ data.contact.phone }}" class="contact-link">Call Now</a>
             </div>
+            {% endif %}
+            {% if data.contact.linkedin %}
             <div class="contact-card">
                 <div class="contact-icon">
                     <i class="fa-brands fa-linkedin"></i>
@@ -180,6 +198,7 @@
                 <p>Connect with me</p>
                 <a href="https://{{ data.contact.linkedin }}" target="_blank" class="contact-link">Visit Profile</a>
             </div>
+            {% endif %}
         </div>
     </div>
 </section>

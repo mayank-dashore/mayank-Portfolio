@@ -6,9 +6,8 @@ app = Flask(__name__)
 resume_data = {
     'name': 'Mayank Dashore',
     'title': 'Data Engineer',
+    'portrait_image': 'images/PF.jpg', # You can change this to any image path, e.g. 'images/my-photo.jpg'
     'contact': {
-        'phone': '+91-8999169257',
-        'email': 'dashore.mayank@gmail.com',
         'linkedin': 'linkedin.com/in/mayankaz'
     },
     'summary': 'Results-driven Data Engineer with 2 years of experience building scalable ETL and AWS-based data pipelines using Python and SSIS. M.Tech in Big Data Analytics with a research publication in the data domain. Strong background in data modeling, transformation, and BI solutions using SQL Server, SSAS, MySQL, and Power BI semantic models. Passionate about pipeline automation, data quality, and high-performance analytics delivery.',
@@ -73,6 +72,8 @@ resume_data = {
     ],
     'projects': [
         {
+            # To add a custom cover image, add an 'image_url' key like below:
+            # 'image_url': 'https://picsum.photos/seed/p1/800/600',
             'title': 'Investment Ledger processing for a Private Equity',
             'date': 'Feb 2026',
             'description': [
@@ -82,6 +83,7 @@ resume_data = {
             ]
         },
         {
+            'image_url': 'https://picsum.photos/seed/p2/800/600',
             'title': 'Financial Ranking system for Investment',
             'date': 'Sep 2025',
             'description': [
@@ -102,7 +104,10 @@ resume_data = {
     ],
     'blog_posts': [
         {
+            # To add a custom cover image, add an 'image_url' key like below:
+            # 'image_url': 'images/my_blog_image.jpg',
             'slug': 'data-pipeline-architecture-patterns',
+            'image_url': 'https://picsum.photos/seed/b1/800/600',
             'title': 'Data Pipeline Architecture Patterns',
             'date': 'May 2026',
             'excerpt': 'Exploring scalable ETL architecture patterns, resilient data workflows, and cloud-native pipeline design.',
@@ -149,9 +154,29 @@ resume_data = {
 def home():
     return render_template('index.html', data=resume_data)
 
-@app.route('/blog/<slug>')
-def blog_post(slug):
+@app.route('/about')
+def about():
+    return render_template('about.html', data=resume_data)
 
+@app.route('/projects')
+def projects():
+    return render_template('projects.html', data=resume_data, projects=resume_data['projects'])
+
+@app.route('/projects/<int:project_id>')
+def project_detail(project_id):
+    # Find matching project
+    if project_id < 0 or project_id >= len(resume_data['projects']):
+        abort(404)
+    
+    project = resume_data['projects'][project_id]
+    return render_template('project_detail.html', data=resume_data, project=project, project_id=project_id)
+
+@app.route('/blogs')
+def blogs():
+    return render_template('blogs.html', data=resume_data, posts=resume_data['blog_posts'])
+
+@app.route('/blogs/<slug>')
+def blog_post(slug):
     # Find matching blog post
     post = next(
         (p for p in resume_data['blog_posts'] if p['slug'] == slug),
@@ -162,9 +187,7 @@ def blog_post(slug):
     if post is None:
         abort(404)
 
-    return render_template('blog_post.html', post=post)
-
-# Remove other routes as we'll make it single-page
+    return render_template('blog_post.html', data=resume_data, post=post)
 
 if __name__ == '__main__':
     app.run(debug=True)
