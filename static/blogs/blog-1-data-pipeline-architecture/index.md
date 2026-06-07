@@ -5,3 +5,6 @@ Data engineers need pipelines that are reliable, testable, and easy to operate. 
 I explain how AWS Glue, S3, Lambda, and Step Functions work together to deliver resilient data processing aligned with financial reporting needs.
 
 The post also includes best practices for schema versioning, monitoring, and handling schema drift in production datasets.
+
+updated post :
+![AWS Architecture](https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg)

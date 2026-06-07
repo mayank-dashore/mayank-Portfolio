@@ -1,38 +1,128 @@
 {% extends "base.html" %}
 
-{% block title %}About{% endblock %}
+{% block title %}About - Mayank | Data Engineer{% endblock %}
 
 {% block content %}
-<section class="py-5">
-    <div class="container">
-        <h1 class="text-center mb-5">About Me</h1>
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <p class="lead text-center mb-4">{{ data.summary }}</p>
-                <h3>Education</h3>
-                {% for edu in data.education %}
-                <div class="mb-4">
-                    <h5>{{ edu.degree }}</h5>
-                    <p class="text-muted">{{ edu.institution }} | {{ edu.period }}</p>
-                    <p>GPA: {{ edu.gpa }}</p>
+<section class="education-section py-5">
+    <div class="container-xl">
+        <div class="section-header text-center mx-auto mb-5">
+            <span>Academic Background</span>
+            <h2>Education & Certifications</h2>
+        </div>
+        <div class="row gx-4 gy-4 align-items-stretch">
+            {% for edu in data.education %}
+            <div class="col-lg-6 d-flex">
+                <div class="glass-card p-4 w-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <h3 class="mb-3">{{ edu.degree }}</h3>
+                        <p><strong>{{ edu.institution }}</strong></p>
+                        <p class="text-muted">{{ edu.period }}</p>
+                    </div>
+                    <p class="mt-3 mb-0">GPA: <strong>{{ edu.gpa }}</strong></p>
                 </div>
-                {% endfor %}
-                <h3>Certifications</h3>
-                <ul>
-                    {% for cert in data.certifications %}
-                    <li>{{ cert }}</li>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="section-header text-center mx-auto mb-5 mt-5">
+            <h3>Professional Certifications</h3>
+        </div>
+        <div class="row gx-4 gy-4">
+            {% for cert in data.certifications %}
+            <div class="col-lg-6">
+                <div class="glass-card p-4">
+                    <p><i class="fas fa-certificate" style="color: var(--accent); margin-right: 0.5rem;"></i> {{ cert }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="experience-section py-5">
+    <div class="container-xl">
+        <div class="section-header text-center mx-auto mb-5">
+            <span>Professional Journey</span>
+            <h2>Work Experience</h2>
+        </div>
+        <div class="experience-timeline">
+            {% for exp in data.experience %}
+            <div class="experience-card glass-card p-4 mb-4">
+                <div class="experience-header mb-3">
+                    <h3 class="mb-1">{{ exp.position }}</h3>
+                    <span class="experience-company">{{ exp.company }}</span>
+                </div>
+                <p class="experience-period small mb-3">{{ exp.period }}</p>
+                <ul class="experience-list">
+                    {% for resp in exp.responsibilities %}
+                    <li class="mb-2">{{ resp }}</li>
                     {% endfor %}
                 </ul>
-                <h3>Research Publications</h3>
-                {% for pub in data.publications %}
-                <div class="mb-3">
-                    <h5>{{ pub.title }}</h5>
-                    <p>{{ pub.publisher }} | {{ pub.date }}</p>
-                    <p>{{ pub.doi }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="skills-section py-5">
+    <div class="container-xl">
+        <div class="section-header text-center mx-auto mb-5">
+            <span>Technical Skills</span>
+            <h2>Tools & Technologies</h2>
+        </div>
+        <div class="row gx-4 gy-4">
+            <div class="col-lg-6">
+                <div class="glass-card p-4">
+                    <h3>Proficient</h3>
+                    <ul class="skills-list">
+                        {% for skill in data.skills.proficient %}
+                        <li>{{ skill }}</li>
+                        {% endfor %}
+                    </ul>
                 </div>
-                {% endfor %}
+            </div>
+            <div class="col-lg-6">
+                <div class="glass-card p-4">
+                    <h3>Exposure</h3>
+                    <ul class="skills-list">
+                        {% for skill in data.skills.exposure %}
+                        <li>{{ skill }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
+    </div>
+</section>
+
+<section class="publications-section py-5">
+    <div class="container-xl">
+        <div class="section-header text-center mx-auto mb-5">
+            <span>Research</span>
+            <h2>Publications</h2>
+        </div>
+        <div class="row gx-4 gy-4">
+            {% for pub in data.publications %}
+            <div class="col-lg-8 mx-auto">
+                <a href="https://doi.org/10.1007/978-981-97-7632-0_3" target="_blank" class="text-decoration-none">
+                    <div class="glass-card p-4" style="cursor: pointer;">
+                        <h3 class="mb-2 text-main" style="color: var(--text-main);">{{ pub.title }}</h3>
+                        <p class="mb-1" style="color: var(--text-main);"><strong>{{ pub.publisher }}</strong></p>
+                        <p class="text-muted mb-2">Published: {{ pub.date }}</p>
+                        <p class="small mb-3"><code>{{ pub.doi }}</code></p>
+                        <span class="btn-more d-inline-block">Read Published Paper →</span>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="cta-section text-center py-5">
+    <div class="container-xl">
+        <a href="/" class="btn btn-cta">Back to Home</a>
+        <a href="{{ url_for('projects') }}" class="btn btn-cta">View My Projects →</a>
     </div>
 </section>
 {% endblock %}

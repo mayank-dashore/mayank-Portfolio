@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.title }} - Mayank | Data Engineer{% endblock %}
+
+{% block content %}
+<section class="project-detail-section py-5">
+    <div class="container-xl">
+        <div class="project-detail-header mb-5">
+            <a href="{{ url_for('projects') }}" class="back-link">← Back to Projects</a>
+            <div class="project-cover project-cover--{{ project_id + 1 }} my-4" style="height: 300px; border-radius: 16px; overflow: hidden;"></div>
+            
+            <h1 class="mb-3">{{ project.title }}</h1>
+            <p class="project-date text-muted">{{ project.date }}</p>
+        </div>
+
+        <div class="project-detail-content">
+            <div class="glass-card p-5 mb-5">
+                {% for desc in project.description %}
+                <p class="mb-4 lead">{{ desc }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="project-navigation mt-5 d-flex justify-content-between align-items-center">
+            {% if project_id > 0 %}
+            <a href="{{ url_for('project_detail', project_id=project_id-1) }}" class="btn btn-cta">← Previous Project</a>
+            {% endif %}
+            
+            <a href="{{ url_for('projects') }}" class="btn btn-cta">View All Projects</a>
+            
+            {% if project_id < data.projects|length - 1 %}
+            <a href="{{ url_for('project_detail', project_id=project_id+1) }}" class="btn btn-cta">Next Project →</a>
+            {% endif %}
+        </div>
+
+        <section class="cta-section text-center py-5 mt-5">
+            <div class="container-xl">
+                <h2 class="mb-4">Ready to Collaborate?</h2>
+                <a href="/#contact" class="btn btn-cta">Get in Touch</a>
+            </div>
+        </section>
+    </div>
+</section>
+
+<style>
+    .back-link {
+        color: var(--text-main);
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s ease;
+    }
+    .back-link:hover {
+        color: var(--accent);
+    }
+    .project-navigation {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+</style>
+{% endblock %}
